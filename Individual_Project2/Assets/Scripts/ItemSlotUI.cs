@@ -6,46 +6,23 @@ using UnityEngine.UI;
 
 public class ItemSlotUI : MonoBehaviour
 {
-    public Button button;
     public Image icon;
-    public TextMeshProUGUI quatityText;
-    private ItemSlot curSlot;
-    private Outline outline;
+    public GameObject EquipObject;
 
-    public int index;
-    public bool equipped;
+    private Item item;
 
-    private void Awake()
+    public void Init (Item item)
     {
-        outline = GetComponent<Outline>();
+        this.item = item;
+
+        icon.sprite = item.Data.icon;
+        EquipObject.SetActive(item.IsEquipped);
     }
 
-    private void OnEnable()
+    public void OnClickItem()
     {
-        outline.enabled = equipped;
+        item.IsEquipped = !item.IsEquipped;
+        EquipObject.SetActive(item.IsEquipped);
     }
 
-    public void Set(ItemSlot slot)
-    {
-        curSlot = slot;
-        icon.gameObject.SetActive(true);
-        icon.sprite = slot.item.icon;
-        quatityText.text = slot.quantity > 1 ? slot.quantity.ToString() : string.Empty;
-
-        if (outline != null)
-        {
-            outline.enabled = equipped;
-        }
-    }
-
-    public void Clear()
-    {
-        curSlot = null;
-        icon.gameObject.SetActive(false);
-    }
-
-    public void OnButtonClick()
-    {
-        Inventory.instance.SelectItem(index);
-    }
 }

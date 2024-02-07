@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class UIEvents : MonoBehaviour
 {
+
+
     bool TabChk = false;
     public void OnClickInventoryEvent()
     {
@@ -40,6 +42,22 @@ public class UIEvents : MonoBehaviour
             position.x = -390;
             obj.transform.localPosition = position;
             TabChk = false;
+        }
+    }
+
+    [Header("User Inventory")]
+    [SerializeField] private Transform Slots;
+    [SerializeField] private GameObject itemSlot;
+    private void Start()
+    {
+        Init();
+    }
+    void Init()
+    {
+        foreach(Item item in GameManager.Instance.User.Inventory)
+        {
+            ItemSlotUI itemSlot = Instantiate(this.itemSlot, Slots).GetComponent<ItemSlotUI>();
+            itemSlot.Init(item);
         }
     }
 }
